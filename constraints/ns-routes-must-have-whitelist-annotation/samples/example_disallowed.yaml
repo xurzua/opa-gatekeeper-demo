@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: disallowed-route
+  annotations:
+    haproxy.router.openshift.io/ip_whitelist: "asdas"
+spec:
+  to:
+    kind: Service
+    name: disallowed-service
+    weight: 100
+  port:
+    targetPort: web
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

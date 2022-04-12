@@ -1,0 +1,19 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredAnnotations
+metadata:
+  name: ns-routes-must-have-whitelist-annotation
+spec:
+  match:
+    kinds:
+      - apiGroups: ["extensions", "route.openshift.io"]
+        kinds: ["Route"]
+    # make sure you add / replace this values with the ones you need.
+    namespaces:
+      - "production"
+      - "staging"
+      - "demo"
+  parameters:
+    message: "This namespace routes must have a `haproxy.router.openshift.io/ip_whitelist` annotation."
+    annotations:
+      - key: haproxy.router.openshift.io/ip_whitelist
+        allowedRegex: ^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$
